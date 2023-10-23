@@ -1,4 +1,11 @@
-import { useState, useEffect, useRef, useMemo, KeyboardEvent } from 'react';
+import {
+	useState,
+	useEffect,
+	useRef,
+	useMemo,
+	useCallback,
+	KeyboardEvent
+} from 'react';
 import './App.css';
 
 type TaskProps = {
@@ -39,7 +46,7 @@ function App() {
 		localStorage.setItem('@cursoreact', JSON.stringify(tasks));
 	}, [tasks]);
 
-	const handleInput = () => {
+	const handleInput = useCallback(() => {
 		addButtonClassName = 'add-button-add';
 
 		if (!input) {
@@ -61,7 +68,7 @@ function App() {
 
 		setTasks((prevState) => [...prevState, newTask]);
 		setInput('');
-	};
+	}, [input, tasks]);
 
 	const handleSaveEdit = () => {
 		const itemIndex = tasks.findIndex(
