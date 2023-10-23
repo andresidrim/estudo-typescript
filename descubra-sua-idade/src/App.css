@@ -14,7 +14,8 @@
 	margin-bottom: 20px;
 }
 
-.input-area {
+.input-area,
+.result-section {
 	width: 400px;
 	background-color: white;
 	padding: 18px 10px;
@@ -53,4 +54,15 @@
 .calculate-age-button:hover {
 	scale: 1.015;
 	opacity: 1;
+}
+
+.result-section {
+	margin-top: 10px;
+}
+
+.result {
+	text-align: center;
+	flex-direction: column;
+	width: 100%;
+	font-weight: bold;
 }

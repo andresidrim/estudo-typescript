@@ -60,11 +60,13 @@ function App() {
 				</form>
 			</section>
 
-			<section className='result-section'>
-				<p className='result'>
-					{user.nome} possui {user.idade}
-				</p>
-			</section>
+			{user.nome !== '' && (
+				<section className='result-section'>
+					<p className='result'>
+						{user.nome} possui {user.idade} anos!
+					</p>
+				</section>
+			)}
 		</div>
 	);
 }
