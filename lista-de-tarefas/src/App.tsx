@@ -1,4 +1,4 @@
-import { useState, KeyboardEvent } from 'react';
+import { useState, useEffect, KeyboardEvent } from 'react';
 import './App.css';
 
 type TaskProps = {
@@ -15,6 +15,15 @@ function App() {
 		enabled: false,
 		tasks: ''
 	});
+
+	useEffect(() => {
+		const savedTasks = localStorage.getItem('@cursoreact');
+		console.log(savedTasks);
+
+		if (savedTasks) {
+			setTasks(JSON.parse(savedTasks));
+		}
+	}, []);
 
 	const handleInput = () => {
 		addButtonClassName = 'add-button-add';
@@ -38,6 +47,7 @@ function App() {
 
 		setTasks((prevState) => [...prevState, newTask]);
 		setInput('');
+		localStorage.setItem('@cursoreact', JSON.stringify([...tasks, newTask]));
 	};
 
 	const handleSaveEdit = () => {
@@ -54,11 +64,13 @@ function App() {
 
 		allTasks[itemIndex] = editedTask;
 		setTasks(allTasks);
+		localStorage.setItem('@cursoreact', JSON.stringify(allTasks));
 	};
 
 	const handleDeletions = (itemIndex: number) => {
 		const removeTask = tasks.filter((taskIndex) => taskIndex.id !== itemIndex);
 		setTasks(removeTask);
+		localStorage.setItem('@cursoreact', JSON.stringify(removeTask));
 	};
 
 	const editTaskName = (itemName: string) => {
