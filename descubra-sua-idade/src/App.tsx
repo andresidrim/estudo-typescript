@@ -1,28 +1,69 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import './App.css';
 
 type UserProps = {
 	nome: string;
-	ano: number;
+	idade: number | undefined;
 };
 
 function App() {
-	const [user, setUser] = useState<UserProps>();
+	const [userInputNome, setUserInputNome] = useState<string>('');
+	const [userInputYear, setUserInputYear] = useState<number>();
+
+	const [user, setUser] = useState<UserProps>({
+		nome: '',
+		idade: undefined
+	});
+
+	const calcularIdade = (event: FormEvent) => {
+		event.preventDefault();
+
+		const dataAtual = new Date();
+		const anoAtual = dataAtual.getFullYear();
+
+		const idade = anoAtual - userInputYear!;
+		setUser({
+			nome: userInputNome,
+			idade: idade
+		});
+	};
 
 	return (
 		<div className='App'>
 			<h1 className='title'>Descubra a sua idade</h1>
 			<section className='input-area'>
-				<h4 className='input-title'>Digite o seu nome:</h4>
-				<input className='user-input' placeholder='ex: André Sidrim' />
-				<h4 className='input-title'>Digite o ano que nasceu:</h4>
-				<input
-					className='user-input'
-					placeholder='ex: 2004'
-					type='number'
-					step='1'
-				/>
-				<button className='calculate-age-button'>Descobrir idade</button>
+				<form onSubmit={calcularIdade}>
+					<h4 className='input-title'>Digite o seu nome:</h4>
+					<input
+						className='user-input'
+						placeholder='ex: André Sidrim'
+						value={userInputNome}
+						onChange={(e) => setUserInputNome(e.target.value)}
+						required
+					/>
+					<h4 className='input-title'>Digite o ano que nasceu:</h4>
+					<input
+						className='user-input'
+						placeholder='ex: 2004'
+						type='number'
+						step='1'
+						min='1900'
+						value={userInputYear}
+						onChange={(e) => setUserInputYear(Number(e.target.value))}
+						required
+					/>
+					<input
+						className='calculate-age-button'
+						type='submit'
+						value='Descobrir idade'
+					/>
+				</form>
+			</section>
+
+			<section className='result-section'>
+				<p className='result'>
+					{user.nome} possui {user.idade}
+				</p>
 			</section>
 		</div>
 	);
