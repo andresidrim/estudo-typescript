@@ -1,0 +1,56 @@
+.App {
+	width: 100%;
+	min-height: 100vh;
+	background-color: #121212;
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	padding-top: 120px;
+}
+
+.title {
+	color: white;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+
+.input-area {
+	width: 400px;
+	background-color: white;
+	padding: 18px 10px;
+	border-radius: 5px;
+}
+
+.input-title {
+	font-weight: normal;
+	margin-top: 7px;
+	margin-bottom: 5px;
+}
+
+.user-input {
+	background-color: #121212;
+	color: gainsboro;
+	padding: 7px 5px;
+	border: 0;
+	border-radius: 3px;
+	width: 100%;
+	margin-bottom: 15px;
+}
+
+.calculate-age-button {
+	width: 100%;
+	padding: 7px 5px;
+	border: 0;
+	border-radius: 5px;
+	background-color: aqua;
+	font-weight: bold;
+	font-size: 15px;
+	opacity: 0.8;
+	transition: 0.3s;
+	cursor: pointer;
+}
+
+.calculate-age-button:hover {
+	scale: 1.015;
+	opacity: 1;
+}
