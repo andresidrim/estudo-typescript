@@ -15,6 +15,11 @@ function App() {
 		idade: undefined
 	});
 
+	const retornarAnoAtual = () => {
+		const dataAtual = new Date();
+		return String(dataAtual.getFullYear());
+	};
+
 	const calcularIdade = (event: FormEvent) => {
 		event.preventDefault();
 
@@ -48,6 +53,7 @@ function App() {
 						type='number'
 						step='1'
 						min='1900'
+						max={retornarAnoAtual()}
 						value={userInputYear}
 						onChange={(e) => setUserInputYear(Number(e.target.value))}
 						required
