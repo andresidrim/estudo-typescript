@@ -1,4 +1,10 @@
-import { useState, useEffect, KeyboardEvent } from 'react';
+import {
+	useState,
+	useEffect,
+	useRef,
+	KeyboardEvent,
+	InputHTMLAttributes
+} from 'react';
 import './App.css';
 
 type TaskProps = {
@@ -9,6 +15,9 @@ type TaskProps = {
 let addButtonClassName = 'add-button-add';
 
 function App() {
+	const inputRef = useRef<HTMLInputElement>(null);
+	const firstRender = useRef(true);
+
 	const [tasks, setTasks] = useState<TaskProps[]>([]);
 	const [input, setInput] = useState<string>('');
 	const [editTask, setEditTask] = useState({
@@ -17,6 +26,8 @@ function App() {
 	});
 
 	useEffect(() => {
+		console.log('entrou');
+
 		const savedTasks = localStorage.getItem('@cursoreact');
 		console.log(savedTasks);
 
@@ -24,6 +35,15 @@ function App() {
 			setTasks(JSON.parse(savedTasks));
 		}
 	}, []);
+
+	useEffect(() => {
+		if (firstRender.current) {
+			firstRender.current = false;
+			return;
+		}
+
+		localStorage.setItem('@cursoreact', JSON.stringify(tasks));
+	}, [tasks]);
 
 	const handleInput = () => {
 		addButtonClassName = 'add-button-add';
@@ -47,7 +67,6 @@ function App() {
 
 		setTasks((prevState) => [...prevState, newTask]);
 		setInput('');
-		localStorage.setItem('@cursoreact', JSON.stringify([...tasks, newTask]));
 	};
 
 	const handleSaveEdit = () => {
@@ -64,18 +83,17 @@ function App() {
 
 		allTasks[itemIndex] = editedTask;
 		setTasks(allTasks);
-		localStorage.setItem('@cursoreact', JSON.stringify(allTasks));
 	};
 
 	const handleDeletions = (itemIndex: number) => {
 		const removeTask = tasks.filter((taskIndex) => taskIndex.id !== itemIndex);
 		setTasks(removeTask);
-		localStorage.setItem('@cursoreact', JSON.stringify(removeTask));
 	};
 
 	const editTaskName = (itemName: string) => {
 		addButtonClassName = 'add-button-edit';
 		setInput(itemName);
+		inputRef.current?.focus();
 		setEditTask({
 			enabled: true,
 			tasks: itemName
@@ -97,6 +115,7 @@ function App() {
 				value={input}
 				onChange={(e) => setInput(e.target.value)}
 				onKeyDown={handleEnterPress}
+				ref={inputRef}
 			/>
 			<button className={addButtonClassName} onClick={handleInput}>
 				{editTask.enabled ? 'Editar tarefa' : 'Adicionar tarefa'}
