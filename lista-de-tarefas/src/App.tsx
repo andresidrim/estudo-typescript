@@ -1,10 +1,4 @@
-import {
-	useState,
-	useEffect,
-	useRef,
-	KeyboardEvent,
-	InputHTMLAttributes
-} from 'react';
+import { useState, useEffect, useRef, useMemo, KeyboardEvent } from 'react';
 import './App.css';
 
 type TaskProps = {
@@ -16,7 +10,7 @@ let addButtonClassName = 'add-button-add';
 
 function App() {
 	const inputRef = useRef<HTMLInputElement>(null);
-	const firstRender = useRef(true);
+	const firstRender = useRef<boolean>(true);
 
 	const [tasks, setTasks] = useState<TaskProps[]>([]);
 	const [input, setInput] = useState<string>('');
@@ -106,6 +100,10 @@ function App() {
 		}
 	};
 
+	const totalTasks = useMemo<number>(() => {
+		return tasks.length;
+	}, [tasks]);
+
 	return (
 		<div className='App'>
 			<h1 className='title'>Lista de tarefas</h1>
@@ -121,6 +119,9 @@ function App() {
 				{editTask.enabled ? 'Editar tarefa' : 'Adicionar tarefa'}
 			</button>
 			<hr />
+
+			<strong className='task-counter'>Você tem {totalTasks} tarefas</strong>
+
 			{tasks.map(({ taskName, id }: TaskProps) => (
 				<section className='result' key={id}>
 					<span>{taskName}</span>
