@@ -15,6 +15,7 @@ type CoinProps = {
 	formatedMarket: string;
 	formatedLowPrice: string;
 	formatedHighPrice: string;
+	formatedDelta: number;
 };
 
 const Detail = () => {
@@ -43,7 +44,8 @@ const Detail = () => {
 				formatedPrice: price.format(Number(data.price)),
 				formatedMarket: price.format(Number(data.market_cap)),
 				formatedLowPrice: price.format(Number(data.low_24h)),
-				formatedHighPrice: price.format(Number(data.high_24h))
+				formatedHighPrice: price.format(Number(data.high_24h)),
+				formatedDelta: parseFloat(data.delta_24h.replace(',', '.'))
 			};
 
 			setDetail(resultData);
@@ -84,7 +86,7 @@ const Detail = () => {
 					<strong>Delta (24h):</strong>
 					<span
 						className={
-							Number.parseInt(detail?.delta_24h!) >= 0
+							detail?.formatedDelta && detail?.formatedDelta >= 0
 								? style.profit
 								: style.loss
 						}

@@ -14,6 +14,7 @@ type CoinProps = {
 	market_cap: string;
 	formatedPrice: string;
 	formatedMarket: string;
+	formatedDelta: number;
 };
 
 type DataProps = {
@@ -42,7 +43,8 @@ const Home = () => {
 			const formated = {
 				...item,
 				formatedPrice: price.format(Number(item.price)),
-				formatedMarket: price.format(Number(item.market_cap))
+				formatedMarket: price.format(Number(item.market_cap)),
+				formatedDelta: parseFloat(item.delta_24h.replace(',', '.'))
 			};
 
 			return formated;
@@ -103,16 +105,11 @@ const Home = () => {
 							</td>
 							<td
 								className={
-									Number.parseInt(coin?.delta_24h) >= 0
-										? style.tdprofit
-										: style.tdloss
+									coin.formatedDelta >= 0 ? style.tdprofit : style.tdloss
 								}
 								data-label='Volume'
 							>
-								<span>
-									{/*{coin.delta_24h}*/}
-									{coin.delta_24h}
-								</span>
+								<span>{coin.delta_24h}</span>
 							</td>
 						</tr>
 					))}
