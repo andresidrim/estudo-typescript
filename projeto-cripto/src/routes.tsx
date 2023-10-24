@@ -13,6 +13,14 @@ const router = createBrowserRouter([
 			{
 				path: '/',
 				element: <Home />
+			},
+			{
+				path: '/detail/:symbol',
+				element: <Detail />
+			},
+			{
+				path: '*',
+				element: <NotFound />
 			}
 		]
 	}
