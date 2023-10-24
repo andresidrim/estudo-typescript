@@ -27,7 +27,7 @@ const Home = () => {
 
 	const getData = async () => {
 		const response = await fetch(
-			'https://sujeitoprogramador.com/api-cripto/?key=14f4843a9573cde6'
+			'https://sujeitoprogramador.com/api-cripto/?key=c0dbca509c5a7da1'
 		);
 		const data: DataProps = await response.json();
 
@@ -103,11 +103,16 @@ const Home = () => {
 							</td>
 							<td
 								className={
-									Number(coin?.delta_24h) >= 0 ? style.tdprofit : style.tdloss
+									Number.parseInt(coin?.delta_24h) >= 0
+										? style.tdprofit
+										: style.tdloss
 								}
 								data-label='Volume'
 							>
-								<span>{coin.delta_24h}</span>
+								<span>
+									{/*{coin.delta_24h}*/}
+									{coin.delta_24h}
+								</span>
 							</td>
 						</tr>
 					))}
