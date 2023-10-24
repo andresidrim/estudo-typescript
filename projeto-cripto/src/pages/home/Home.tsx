@@ -52,7 +52,7 @@ const Home = () => {
 
 	useEffect(() => {
 		getData();
-	});
+	}, []);
 
 	const handleSearch = (e: FormEvent) => {
 		e.preventDefault();
