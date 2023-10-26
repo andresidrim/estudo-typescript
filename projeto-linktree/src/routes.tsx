@@ -8,28 +8,24 @@ import NotFound from './pages/NotFound/NotFound';
 
 const router = createBrowserRouter([
 	{
-		children: [
-			{
-				path: '/',
-				element: <Home />
-			},
-			{
-				path: '/login',
-				element: <Login />
-			},
-			{
-				path: '/admin',
-				element: <Admin />
-			},
-			{
-				path: '/admin/social',
-				element: <SocialMedia />
-			},
-			{
-				path: '*',
-				element: <NotFound />
-			}
-		]
+		path: '/',
+		element: <Home />
+	},
+	{
+		path: '/login',
+		element: <Login />
+	},
+	{
+		path: '/admin',
+		element: <Admin />
+	},
+	{
+		path: '/admin/social',
+		element: <SocialMedia />
+	},
+	{
+		path: '*',
+		element: <NotFound />
 	}
 ]);
 
