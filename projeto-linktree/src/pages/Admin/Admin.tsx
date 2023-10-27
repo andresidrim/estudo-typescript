@@ -1,7 +1,25 @@
-import { useState } from 'react';
+import { FormEvent, useState, useEffect } from 'react';
 import { FiTrash } from 'react-icons/fi';
 import Header from '../../components/Header/Header';
 import Input from '../../components/Input/Input';
+import { db } from '../../services/firebaseConnection';
+import {
+	addDoc,
+	collection,
+	onSnapshot,
+	query,
+	orderBy,
+	doc,
+	deleteDoc
+} from 'firebase/firestore';
+
+type LinkProps = {
+	id: string;
+	name: string;
+	url: string;
+	bg: string;
+	color: string;
+};
 
 const Admin = () => {
 	const [nameInput, setNameInput] = useState<string>('');
@@ -10,11 +28,79 @@ const Admin = () => {
 		useState<string>('#f1f1f1');
 	const [textColorInput, setTextColorInput] = useState<string>('#121212');
 
+	const [links, setLinks] = useState<LinkProps[]>([]);
+
+	useEffect(() => {
+		const linksRef = collection(db, 'links');
+		const queryRef = query(linksRef, orderBy('created', 'asc'));
+
+		const unsub = onSnapshot(queryRef, (snapshot) => {
+			let list: LinkProps[] = [];
+
+			// On snapshot verifica o banco em tempo real
+			snapshot.forEach((doc) => {
+				list.push({
+					id: doc.id,
+					name: doc.data().name,
+					url: doc.data().url,
+					bg: doc.data().bg,
+					color: doc.data().color
+				});
+			});
+
+			setLinks(list);
+		});
+
+		return () => {
+			unsub();
+		};
+	}, []);
+
+	const addToDatabase = async () => {
+		try {
+			await addDoc(collection(db, 'links'), {
+				name: nameInput,
+				url: urlInput,
+				bg: backgroundColorInput,
+				color: textColorInput,
+				created: new Date()
+			});
+
+			console.log('CADASTRADO COM SUCESSO');
+
+			setNameInput('');
+			setUrlInput('');
+			setBackgroundColorInput('#f1f1f1');
+			setTextColorInput('#121212');
+		} catch (error) {
+			console.log('ERRO AO CADASTRAR NO BANCO\n' + error);
+		}
+	};
+
+	const handleRegister = (e: FormEvent) => {
+		e.preventDefault();
+
+		if (nameInput === '' || urlInput === '') {
+			alert('Preencha todos os campos');
+			return;
+		}
+
+		addToDatabase();
+	};
+
+	const handleDeletion = async (id: string) => {
+		const docRef = doc(db, 'links', id);
+		await deleteDoc(docRef);
+	};
+
 	return (
 		<div className='flex flex-col items-center min-h-screen pb-7 px-2'>
 			<Header />
 
-			<form className='flex flex-col mt-8 mb-3 w-full max-w-xl'>
+			<form
+				onSubmit={handleRegister}
+				className='flex flex-col mt-8 mb-3 w-full max-w-xl'
+			>
 				<label className='text-white font-medium mt-2 mb-2'>Nome do link</label>
 				<Input
 					placeholder='Digite o nome do link'
@@ -78,18 +164,26 @@ const Admin = () => {
 				</button>
 			</form>
 
-			<h2 className='font-bold text-white mb-4 text-2xl'>Meus Links</h2>
-			<article
-				className='flex items-center justify-between w-11/12 max-w-xl rounded py-3 px-2 mb-2 select-none'
-				style={{ backgroundColor: '#2563eb', color: 'white' }}
-			>
-				<p>Canal do Youtube</p>
-				<div>
-					<button className='border border-dashed p-1 rounded'>
-						<FiTrash size={18} color='white' />
-					</button>
-				</div>
-			</article>
+			{links.length > 0 && (
+				<h2 className='font-bold text-white mb-4 text-2xl'>Meus Links</h2>
+			)}
+			{links.map((link) => (
+				<article
+					key={link.id}
+					className='flex items-center justify-between w-11/12 max-w-xl rounded py-3 px-2 mb-2 select-none'
+					style={{ backgroundColor: link.bg, color: link.color }}
+				>
+					<p>{link.name}</p>
+					<div>
+						<button
+							className='border border-dashed p-1 rounded'
+							onClick={() => handleDeletion(link.id)}
+						>
+							<FiTrash size={18} color='white' />
+						</button>
+					</div>
+				</article>
+			))}
 		</div>
 	);
 };
