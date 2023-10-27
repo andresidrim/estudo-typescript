@@ -12,7 +12,7 @@ const Login = () => {
 
 	const SignUser = async () => {
 		try {
-			const response = await signInWithEmailAndPassword(auth, email, password);
+			await signInWithEmailAndPassword(auth, email, password);
 			console.log('LOGADO COM SUCESSO');
 			navigate(`/admin`, { replace: true });
 		} catch (error) {
