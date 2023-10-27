@@ -3,12 +3,13 @@ import { UserContext } from '../../contexts/user';
 import Nome from '../Nome/Nome';
 
 const Alunos = () => {
-	const { qtdAluno } = useContext(UserContext);
+	const { qtdAluno, changeName } = useContext(UserContext);
 
 	return (
 		<div>
 			<h3>Quantidade de alunos: {qtdAluno}</h3>
-
+			<button onClick={() => changeName('André')}>mudar nome</button>
+			<br /> <br />
 			<Nome />
 		</div>
 	);
