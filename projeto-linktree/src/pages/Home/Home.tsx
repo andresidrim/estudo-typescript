@@ -1,9 +1,20 @@
+import { useState, useEffect } from 'react';
 import Social from '../../components/Social/Social';
 import { FaFacebook, FaInstagram, FaYoutube } from 'react-icons/fa';
 import { db } from '../../services/firebaseConnection';
-import { getDoc } from 'firebase/firestore';
+import {
+	getDocs,
+	collection,
+	orderBy,
+	query,
+	doc,
+	getDoc
+} from 'firebase/firestore';
 
 const Home = () => {
+	const [links, setLinks] = useState([]);
+	const [socialLinks, setSocialLinks] = useState();
+
 	return (
 		<div className='flex flex-col w-full py-4 items-center justify-center'>
 			<h1 className='md:text-4xl text-3xl font-bold text-white mt-20'>

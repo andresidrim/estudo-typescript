@@ -2,6 +2,7 @@ import { FormEvent, useState, useEffect } from 'react';
 import { FiTrash } from 'react-icons/fi';
 import Header from '../../components/Header/Header';
 import Input from '../../components/Input/Input';
+import { LinkProps } from '../../types/LinkProps';
 import { db } from '../../services/firebaseConnection';
 import {
 	addDoc,
@@ -12,14 +13,6 @@ import {
 	doc,
 	deleteDoc
 } from 'firebase/firestore';
-
-type LinkProps = {
-	id: string;
-	name: string;
-	url: string;
-	bg: string;
-	color: string;
-};
 
 const Admin = () => {
 	const [nameInput, setNameInput] = useState<string>('');
