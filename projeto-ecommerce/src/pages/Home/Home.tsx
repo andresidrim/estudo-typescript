@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { CartContext } from '../../contexts/CartContext';
 import { BsCartPlus } from 'react-icons/bs';
 import { api } from '../../services/api';
-import toast from 'react-hot-toast/headless';
+import { toast } from 'react-toastify';
 
 export type ProductProps = {
 	id: number;
