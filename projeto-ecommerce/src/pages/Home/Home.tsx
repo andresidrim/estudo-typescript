@@ -3,6 +3,7 @@ import { CartContext } from '../../contexts/CartContext';
 import { BsCartPlus } from 'react-icons/bs';
 import { api } from '../../services/api';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 export type ProductProps = {
 	id: number;
@@ -41,11 +42,13 @@ const Home = () => {
 				<div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-5'>
 					{products.map((product) => (
 						<section key={product.id} className='w-full'>
-							<img
-								className='w-full rounded-lg max-h-70 mb-2'
-								src={product.cover}
-								alt={product.title}
-							/>
+							<Link to={`/product/${product.id}`}>
+								<img
+									className='w-full rounded-lg max-h-70 mb-2'
+									src={product.cover}
+									alt={product.title}
+								/>
+							</Link>
 							<p className='font-medium mt-1 mb-2'>{product.title}</p>
 
 							<div className='flex gap-3 items-center'>
@@ -57,7 +60,7 @@ const Home = () => {
 								</strong>
 								<button
 									onClick={() => handleAddItem(product)}
-									className='bg-zinc-900 p-1 rounded'
+									className='bg-zinc-900 p-1 rounded transition hover:scale-105 hover:bg-blue-600'
 								>
 									<BsCartPlus size={20} color='white' />
 								</button>
